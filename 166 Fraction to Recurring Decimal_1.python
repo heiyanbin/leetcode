@@ -1,0 +1,27 @@
+// 166
+// Fraction to Recurring Decimal
+// https://leetcode.com//problems/fraction-to-recurring-decimal/
+class Solution:
+    # @return a string
+    def fractionToDecimal(self, r, d):
+        if r==0:
+            return '0'
+        res=''
+        if bool(int(r<0) ^ int(d<0)):
+            res ='-'
+        r, d=abs(r),abs(d)
+        res += str(r/d)
+        if r%d==0:
+            return res
+        res+='.'
+        r %=d
+        m={}
+        while r>0:
+            if m.has_key(r):
+                return res[:m[r]]+'('+res[m[r]:]+')'
+            else:
+                m[r]=len(res)
+                res += str(r*10/d)
+                r = r*10%d
+        return res
+        

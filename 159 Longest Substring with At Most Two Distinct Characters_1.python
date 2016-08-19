@@ -1,0 +1,24 @@
+// 159
+// Longest Substring with At Most Two Distinct Characters
+// https://leetcode.com//problems/longest-substring-with-at-most-two-distinct-characters/
+class Solution:
+    # @param s, a string
+    # @return an integer
+    def lengthOfLongestSubstringTwoDistinct(self, s):
+        i, j, n, numDistinct, maxlen = 0, 0, len(s), 0, 0
+        if n<=2:
+            return n
+        count = [0 for e in xrange(256)]
+        while j<n:
+            if count[ord(s[j])]==0:
+                numDistinct+=1
+            count[ord(s[j])]+=1
+            while numDistinct > 2:
+                count[ord(s[i])]-=1
+                if count[ord(s[i])]==0:
+                    numDistinct-=1
+                i+=1
+            maxlen = max(maxlen, j-i+1)
+            j+=1
+        return maxlen
+        

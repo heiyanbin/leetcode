@@ -1,0 +1,27 @@
+// 145
+// Binary Tree Postorder Traversal
+// https://leetcode.com//problems/binary-tree-postorder-traversal/
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def postorderTraversal(self, root):
+    	result = []
+    	if root is None: return result
+    	class Task:
+    		def __init__(self, root, type):
+    			self.node, self.type = root, type
+    	stack = [Task(root, 1)]
+    	while len(stack) > 0:
+    		task = stack.pop()
+    		if task.type == 1: # 1 for traverse job
+    			stack.append(Task(task.node, 0)) # 0 for basic print job
+    			if task.node.right is not None: stack.append(Task(task.node.right, 1))
+    			if task.node.left is not None: stack.append(Task(task.node.left, 1))
+    		else: result.append(task.node.val)
+    	return result
+        

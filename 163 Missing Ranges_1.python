@@ -1,0 +1,33 @@
+// 163
+// Missing Ranges
+// https://leetcode.com//problems/missing-ranges/
+class Solution:
+    # @param A, a list of integers
+    # @param lower, an integer
+    # @param upper, an integer
+    # @return a list of strings
+    def findMissingRanges(self, A, lower, upper):
+        n = len(A)
+        if(n==0):
+            return [self.makeRange(lower,upper)]
+        res = []
+        for i in range(0,len(A)):
+            if A[i]>upper:
+                if A[i-1]<upper:
+                    res.append (self.makeRange(A[i-1]+1, upper))
+                return res
+            elif A[i]<= lower or i>0 and A[i-1]>= lower and  A[i]-A[i-1]==1:
+                continue
+            elif (i==0 or A[i-1]< lower) and A[i]> lower:
+                res.append (self.makeRange(lower,A[i]-1))
+            else:
+                res.append (self.makeRange(A[i-1]+1,A[i]-1))
+        if A[n-1]<upper:
+            res.append (self.makeRange(A[n-1]+1, upper))
+        return res
+        
+    def makeRange(self,a,b):
+        if a==b:
+            return str(a)+''
+        else:
+            return str(a)+'->'+str(b)

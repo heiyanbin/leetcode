@@ -1,0 +1,16 @@
+// 167
+// Two Sum II - Input array is sorted
+// https://leetcode.com//problems/two-sum-ii-input-array-is-sorted/
+class Solution:
+    # @return a tuple, (index1, index2)
+    def twoSum(self, num, target):
+        l, r = 0, len(num)-1
+        while l<r:
+            if num[l]+num[r]==target:
+                return l+1, r+1
+            elif num[l]+num[r]<target:
+                l+=1
+            else:
+                r-=1
+        return -1, -1
+        

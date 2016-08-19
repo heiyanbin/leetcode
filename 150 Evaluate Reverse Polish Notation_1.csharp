@@ -1,0 +1,20 @@
+// 150
+// Evaluate Reverse Polish Notation
+// https://leetcode.com//problems/evaluate-reverse-polish-notation/
+public class Solution {
+    public int EvalRPN(string[] tokens) {
+        var func = new Dictionary<char, Func<int, int, int>>() {{'+', (a, b) => a + b}, {'-', (a, b) => a - b}, {'*', (a, b) => a * b}, {'/', (a, b) => a / b}};
+        Stack<int> operand = new Stack<int>();
+        foreach (var token in tokens) {
+            int n;
+            if (int.TryParse(token, out n)) operand.Push(n);
+            else {
+                int b = operand.Pop();
+                int a = operand.Pop();
+                operand.Push(func[token[0]](a, b));
+            }
+        }
+        if (operand.Count > 0) return operand.Pop();
+        return 0;
+    }
+}
