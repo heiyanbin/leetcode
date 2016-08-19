@@ -1,0 +1,17 @@
+// 36
+// Valid Sudoku
+// https://leetcode.com//problems/valid-sudoku/
+class Solution:
+    # @param {character[][]} board
+    # @return {boolean}
+    def isValidSudoku(self, board):
+        row, col = [[False] * 9 for i in xrange(9)], [[False] * 9 for i in xrange(9)]
+        blo = [[[False] * 9 for i in xrange(3)] for k in xrange(3)]
+        for i in xrange(9):
+            for j in xrange(9):
+                if board[i][j] != '.':
+                    markIndex = int(board[i][j]) - 1
+                    if row[i][markIndex] or col[j][markIndex] or blo[i / 3][j / 3][markIndex]: 
+                        return False
+                    row[i][markIndex], col[j][markIndex], blo[i / 3][j / 3][markIndex] = True, True, True
+        return True;

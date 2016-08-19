@@ -1,0 +1,31 @@
+// 37
+// Sudoku Solver
+// https://leetcode.com//problems/sudoku-solver/
+class Solution:
+    # @param {character[][]} board
+    # @return {void} Do not return anything, modify board in-place instead.
+    def solveSudoku(self, board):
+        self.__row, self.__col  = [[False] * 9 for i in xrange(9)], [[False] * 9 for i in xrange(9)]
+        self.__blo = [[[False] * 9 for i in xrange(3)] for j in xrange(3)]
+        blank = []
+        for i in xrange(9):
+            for j in xrange(9):
+                if board[i][j] == '.': blank.append([i, j])
+                else: self.__mark(i, j, int(board[i][j]), True)
+        self.__dfs(board, blank, 0)
+    
+    def __dfs(self, board, blank, t):
+        if t >= len(blank): return True
+        else:
+            i, j = blank[t][0], blank[t][1]
+            for k in xrange(1, 10):
+                if self.__row[i][k - 1] or self.__col[j][k - 1] or self.__blo[i / 3][j / 3][k - 1]: continue
+                board[i][j] = str(k)
+                self.__mark(i, j, k, True)
+                if self.__dfs(board, blank, t + 1): return True
+                self.__mark(i, j, k, False)
+            return False
+            
+    def __mark(self, i, j, k, flag):
+        self.__row[i][k - 1], self.__col[j][k - 1], self.__blo[i / 3][j / 3][k - 1] = flag, flag, flag
+        
