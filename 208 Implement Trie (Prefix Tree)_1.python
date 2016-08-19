@@ -1,0 +1,65 @@
+// 208
+// Implement Trie (Prefix Tree)
+// https://leetcode.com//problems/implement-trie-prefix-tree/
+class TrieNode:
+    # Initialize your data structure here.
+    def __init__(self):
+        self.value = None
+        self.next = [None] * 26
+        
+
+class Trie:
+
+    def __init__(self):
+        self.root = TrieNode()
+
+    # @param {string} word
+    # @return {void}
+    # Inserts a word into the trie.
+    def insert(self, word):
+        self.__insert(self.root, word, 0)
+        
+    def __insert(self, x, word, d):
+        if x == None: x = TrieNode()
+        if d == len(word):
+            x.value = object()
+            return x
+        index = ord(word[d]) - ord('a')
+        x.next[index] = self.__insert(x.next[index], word, d + 1)
+        return x
+
+    # @param {string} word
+    # @return {boolean}
+    # Returns if the word is in the trie.
+    def search(self, word):
+        x = self.__search(self.root, word, 0)
+        return x != None and x.value != None
+        
+    def __search(self, x, word, d):
+        if x == None: return None
+        if d == len(word): return x
+        return self.__search(x.next[ord(word[d]) - ord('a')], word, d + 1)
+        
+
+    # @param {string} prefix
+    # @return {boolean}
+    # Returns if there is any word in the trie
+    # that starts with the given prefix.
+    def startsWith(self, prefix):
+        x = self.__search(self.root, prefix, 0)
+        
+        def dfs(x):
+            if x == None: return False
+            if x.value != None: return True
+            for child in x.next:
+                if dfs(child): return True
+            return False
+            
+        return dfs(x)
+    
+        
+
+# Your Trie object will be instantiated and called as such:
+# trie = Trie()
+# trie.insert("somestring")
+# trie.search("key")

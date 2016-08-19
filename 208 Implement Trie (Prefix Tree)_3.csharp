@@ -1,0 +1,68 @@
+// 208
+// Implement Trie (Prefix Tree)
+// https://leetcode.com//problems/implement-trie-prefix-tree/
+class TrieNode {
+    // Initialize your data structure here.
+    public TrieNode() {
+        this.next = new TrieNode[26];
+        this.val = null;
+    }
+    public TrieNode[] next;
+    public object val;
+}
+
+public class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void Insert(string word) {
+        Insert(root, word, 0);
+    }
+    
+    private TrieNode Insert(TrieNode x, string word, int d) {
+        if (x == null) x = new TrieNode();
+        if (d == word.Length) {
+            x.val = new object();
+            return x;
+        }
+        int index = word[d] - 'a';
+        x.next[index] = Insert(x.next[index], word, d + 1);
+        return x;
+    }
+
+    // Returns if the word is in the trie.
+    public bool Search(string word) {
+        TrieNode x = Search(root, word, 0);
+        return x != null && x.val != null;
+    }
+    private TrieNode Search(TrieNode x, string word, int d) {
+        if (x == null) return null;
+        if (d == word.Length) return x;
+        return Search(x.next[word[d] - 'a'], word, d + 1);
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public bool StartsWith(string word) {
+        var x = Search(root, word, 0);
+        return dfs(x);
+    }
+    
+    private bool dfs(TrieNode x) {
+        if (x == null) return false;
+        if (x.val != null) return true;
+        for (int i = 0; i < 26; i++) {
+            if (dfs(x.next[i])) return true;;
+        }
+        return false;
+    }
+}
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie = new Trie();
+// trie.Insert("somestring");
+// trie.Search("key");

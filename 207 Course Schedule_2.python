@@ -1,0 +1,25 @@
+// 207
+// Course Schedule
+// https://leetcode.com//problems/course-schedule/
+class Solution:
+    # @param {integer} numCourses
+    # @param {integer[][]} prerequisites
+    # @return {boolean}
+    def canFinish(self, numCourses, prerequisites):
+        G = [[] for i in xrange(numCourses)]
+        for edge in prerequisites:
+            G[edge[0]].append(edge[1])           
+        self.__marked, self.__inPath = [False] * numCourses, [False] * numCourses    
+        for v in xrange(len(G)):
+            if not self.__marked[v] and self.__dfs(G, v):
+                return False    
+        return True
+        
+    def __dfs(self, G, v):
+        self.__marked[v], self.__inPath[v] = True, True
+        for w in G[v]:
+            if not self.__marked[w] and self.__dfs(G, w): return True
+            elif self.__inPath[w]: return True
+        self.__inPath[v] = False
+        return False
+            

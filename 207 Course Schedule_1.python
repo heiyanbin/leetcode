@@ -1,0 +1,28 @@
+// 207
+// Course Schedule
+// https://leetcode.com//problems/course-schedule/
+class Solution:
+    # @param {integer} numCourses
+    # @param {integer[][]} prerequisites
+    # @return {boolean}
+    def canFinish(self, numCourses, prerequisites):
+        G = [[] for i in xrange(numCourses)]
+        for x, y in prerequisites: G[x].append(y)           
+        marked = [0] * numCourses
+        
+        def dfs(G, v): # Return True if  loop detected
+            marked[v] = 2
+            for w in G[v]:
+                if marked[w] == 2 or marked[w] == 0 and dfs(G, w):
+                    return True
+            marked[v] = 1
+            return False
+            
+        for v in xrange(numCourses):
+            if marked[v] == 0 and dfs(G, v):
+                return False   
+                
+        return True
+        
+    
+            

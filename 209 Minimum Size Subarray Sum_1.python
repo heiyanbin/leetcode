@@ -1,0 +1,19 @@
+// 209
+// Minimum Size Subarray Sum
+// https://leetcode.com//problems/minimum-size-subarray-sum/
+class Solution:
+    # @param {integer} s
+    # @param {integer[]} nums
+    # @return {integer}
+    def minSubArrayLen(self, s, nums):
+        i, sum, minLen = 0, 0, len(nums) + 1
+        for j in xrange(len(nums)):
+            sum += nums[j]
+            while sum >= s:
+                minLen = min(minLen, j - i + 1)
+                sum -= nums[i]
+                i += 1
+        if minLen > len(nums): return 0
+        else: return minLen
+        
+        

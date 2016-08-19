@@ -1,0 +1,23 @@
+// 200
+// Number of Islands
+// https://leetcode.com//problems/number-of-islands/
+class Solution:
+    # @param grid, a list of list of characters
+    # @return an integer
+    def numIslands(self, grid):
+        count = 0
+        for i in xrange(len(grid)):
+            for j in xrange(len(grid[i])):
+                if grid[i][j] == '1':
+                    self.dfs(i, j, grid)
+                    count += 1
+        return count
+        
+    def dfs(self, i, j, grid):
+        if i < 0 or i == len(grid) or j < 0 or j == len(grid[i]): return
+        if grid[i][j] != '1': return
+        grid[i][j] = '2'
+        self.dfs(i, j - 1, grid)
+        self.dfs(i, j + 1, grid)
+        self.dfs(i - 1, j, grid)
+        self.dfs(i + 1, j, grid)
