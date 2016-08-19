@@ -1,0 +1,45 @@
+// 126
+// Word Ladder II
+// https://leetcode.com//problems/word-ladder-ii/
+class Solution:
+    # @param start, a string
+    # @param end, a string
+    # @param dict, a set of string
+    # @return a list of lists of string
+    def findLadders(self, start, end, dict):
+        # write your code here
+        queue, marked, prev, found = [start], set([start]), {}, False
+        while  len(queue) > 0 and not found:
+            levelSize, levelMarked = len(queue), set([])
+            for i in xrange(levelSize):
+                word = queue.pop(0)
+                if word == end:
+                    found = True
+                    break
+                else:
+                    for i in xrange(len(word)):
+                        for c in [chr(k) for k in xrange(ord('a'), ord('z') + 1)]:
+                            if c == word[i]: continue
+                            next = word[:i] + c + word[i + 1:]
+                            if next in dict and next not in marked: 
+                                levelMarked.add(next)
+                                if next in prev:
+                                    prev[next].append(word)
+                                else:
+                                    prev[next] = [word]
+                            if next == end: break         
+            marked.update(levelMarked)
+            queue.extend(levelMarked)
+        self.__res, path = [], []
+        self.__dfs(prev, path, end, start)
+        return self.__res
+        
+    def __dfs(self, prev, path, start, end):
+        path.append(start)
+        if start == end:
+            self.__res.append(path[::-1])
+        elif start in prev:
+            for word in prev[start]:
+                self.__dfs(prev, path, word, end)
+        path.pop()
+        
