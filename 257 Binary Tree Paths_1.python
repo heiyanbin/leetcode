@@ -1,0 +1,25 @@
+// 257
+// Binary Tree Paths
+// https://leetcode.com//problems/binary-tree-paths/
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param {TreeNode} root
+    # @return {string[]}
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(root, path):
+            if root == None: return
+            else:
+                newpath = path + (str(root.val) if len(path) == 0 else '->' + str(root.val))
+                if  root.left == None and root.right == None: ans.append(newpath)
+                dfs(root.left, newpath)
+                dfs(root.right, newpath)
+        dfs(root, '')
+        return ans
+        
